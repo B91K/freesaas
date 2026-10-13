@@ -19,10 +19,10 @@ FreeSaaS adds what turns three desktop-class editors into a suite: the hub,
 storage and identity connectors, cross-app features, AI connectors and
 one-command deployment.
 
-> **Status: early scaffold.** The server, provider interfaces, a local-disk
-> storage provider and a dev login work. The editors are not wired into the
-> hub yet, and the cloud and SSO providers are planned. See
-> [docs/PLAN.md](docs/PLAN.md).
+> **Status: early.** The hub opens and saves documents in WordCraft, with
+> files in browser storage (static mode) or on the server. GridCraft and
+> DeckCraft run standalone for now. Cloud storage and SSO providers are
+> planned. See [docs/PLAN.md](docs/PLAN.md).
 
 ## Quick start
 
@@ -40,6 +40,20 @@ docker compose -f deploy/docker-compose/docker-compose.yml up --build
 ```
 
 Already cloned without `--recursive`? Run `scripts/setup.sh`.
+
+### Editors and the static site
+
+The editors are compiled to WebAssembly with
+[trunk](https://trunkrs.dev) (`rustup target add wasm32-unknown-unknown`):
+
+```bash
+scripts/build-web.sh                  # hub + all editors → dist/site (slow the first time)
+python3 -m http.server -d dist/site   # static mode, files kept in the browser
+FREESAAS_WEB_ROOT=dist/site cargo run --bin freesaas -- examples/local-dev.yaml   # server mode
+```
+
+Pushes to `main` publish the static site to GitHub Pages
+(`.github/workflows/pages.yml`).
 
 ## Configuration
 
@@ -59,6 +73,7 @@ See [examples/](examples/) for complete setups.
 
 ```
 upstream/      editors (git submodules; never edited here)
+editors/       our builds of the editors for the hub (e.g. wordcraft-embed)
 server/        Rust server: core interfaces, providers, HTTP API
 web/           hub UI and editor host pages
 deploy/        Docker Compose, Helm (planned)

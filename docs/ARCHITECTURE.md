@@ -16,6 +16,32 @@ Editing happens in the browser (WASM), so the server stays light: it
 authenticates users, brokers file access to the configured storage, and
 serves the hub and editor builds.
 
+## Two ways to run
+
+| | Server mode | Static mode |
+|---|---|---|
+| Hosting | `freesaas` binary or Docker | Any static host, e.g. GitHub Pages |
+| Storage | Providers configured on the server | In the browser (IndexedDB); later OneDrive/Google Drive directly from the browser |
+| Sign-in | Identity provider on the server | None yet; later the user's own Microsoft/Google account |
+| Secrets | Server-side only | **None, by design.** Everything shipped is public. |
+
+The hub (`web/`) is the same in both: `storage.js` picks `ServerStorage` or
+`BrowserStorage` from `config.json`, or by probing for the server.
+
+## Editor bridge
+
+Editors run in an iframe in the hub and talk to it with `postMessage`
+(same origin only). WordCraft's bridge is `editors/wordcraft-embed`: a small
+crate built on the upstream WordCraft crates, unchanged, that replaces the
+browser file picker and downloads with hub messages. The protocol is
+documented in `editors/wordcraft-embed/src/bridge.rs`:
+
+- editor → hub: `ready`, `open-request`, `save {name, bytes}`, `dirty`
+- hub → editor: `open {name, bytes}`
+
+GridCraft and DeckCraft currently run as upstream builds with their own
+Open and Save.
+
 ## Crates
 
 | Crate | Path | Role |

@@ -2,8 +2,11 @@
 
 ## Phase 0: Validate (2–3 weeks)
 - [x] Repo skeleton, editors as submodules, provider interfaces, local storage, dev login
-- [ ] Build each editor's WASM target. Measure bundle size and load time.
-- [ ] Find or add a JS-facing API to open and save files in the web builds
+- [x] Build each editor's WASM target (WordCraft: ~40 MB .wasm, ~8 min release build)
+- [x] Hub ↔ editor bridge for WordCraft (`editors/wordcraft-embed`, no upstream fork needed)
+- [x] Static mode: hub + editors on GitHub Pages, files in browser storage
+- [ ] Bridges for GridCraft and DeckCraft
+- [ ] Shrink load time: bundle size, compression, caching, a loading screen
 - [ ] File-compatibility corpus: 100+ real .docx/.xlsx/.pptx files, round-trip tests in CI
 - [ ] Check text input (IME), accessibility and mobile behaviour of the canvas UI
 - [ ] Legal: confirm licensing and the CLA, choose a product name, register a legal entity
@@ -14,6 +17,7 @@
 - [ ] Editors embedded in the hub, opening and saving through `/api/storage`
 - [ ] OIDC identity provider (Entra ID, Google, Keycloak tested)
 - [ ] Storage providers: S3, OneDrive/SharePoint, Google Drive, WebDAV
+- [ ] Static mode: OneDrive and Google Drive straight from the browser (OAuth PKCE, public client ids)
 - [ ] Docker image published. Docker Compose quick start with bundled Keycloak and MinIO.
 - [ ] Public launch: docs site, demo instance, GitHub Sponsors
 
