@@ -1,0 +1,9 @@
+# Run everything on one machine with no login. For development only.
+listen: 127.0.0.1:8080
+identity:
+  type: dev
+  insecure: true      # required: everyone is signed in as the same user
+  user: developer
+storage:
+  - type: local
+    root: ./data

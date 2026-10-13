@@ -1,0 +1,15 @@
+# Quick start: from the repo root run
+#   docker compose -f deploy/docker-compose/docker-compose.yml up --build
+# then open http://localhost:8080
+services:
+  freesaas:
+    build:
+      context: ../..
+      dockerfile: deploy/docker-compose/Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./freesaas.yaml:/etc/freesaas/freesaas.yaml:ro
+      - freesaas-data:/data
+volumes:
+  freesaas-data:

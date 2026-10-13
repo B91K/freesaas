@@ -1,0 +1,9 @@
+# PLANNED (providers not implemented yet): Google sign-in and Google Drive.
+listen: 0.0.0.0:8080
+identity:
+  type: oidc
+  issuer: https://accounts.google.com
+  client_id: <oauth-client-id>
+  client_secret_env: FREESAAS_OIDC_SECRET
+storage:
+  - type: gdrive

@@ -1,0 +1,16 @@
+# PLANNED (providers not implemented yet): nothing leaves your network.
+# Keycloak for login, MinIO (S3-compatible) for files, a local model for AI.
+listen: 0.0.0.0:8080
+identity:
+  type: oidc
+  issuer: https://keycloak.internal/realms/company
+  client_id: freesaas
+  client_secret_env: FREESAAS_OIDC_SECRET
+storage:
+  - type: s3
+    id: company-docs
+    endpoint: https://minio.internal
+    bucket: company-docs
+ai:
+  type: ollama
+  endpoint: http://ollama.internal:11434

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreeSaaS</title>
+<style>
+  :root { --bg:#fafafa; --fg:#1d1d1f; --muted:#6e6e73; --card:#fff; --line:#e5e5ea; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#111; --fg:#f2f2f2; --muted:#9a9aa0; --card:#1c1c1e; --line:#2c2c2e; } }
+  body { margin:0; font:15px/1.5 system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+  main { max-width:860px; margin:0 auto; padding:32px 16px; }
+  header { display:flex; justify-content:space-between; align-items:baseline; }
+  .muted { color:var(--muted); }
+  .apps { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin:24px 0; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; }
+  table { width:100%; border-collapse:collapse; }
+  td { padding:6px 4px; border-bottom:1px solid var(--line); }
+</style>
+</head>
+<body>
+<main>
+  <header><h1>FreeSaaS</h1><span id="me" class="muted"></span></header>
+  <p class="muted">Placeholder hub. The editors are wired in as they are built from <code>upstream/</code>.</p>
+  <div class="apps">
+    <div class="card"><strong>Documents</strong><br><span class="muted">WordCraft · .docx</span></div>
+    <div class="card"><strong>Spreadsheets</strong><br><span class="muted">GridCraft · .xlsx</span></div>
+    <div class="card"><strong>Presentations</strong><br><span class="muted">DeckCraft · .pptx</span></div>
+  </div>
+  <h2>Files</h2>
+  <div id="files" class="muted">Loading…</div>
+</main>
+<script>
+async function getJSON(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error((await r.json()).error || r.statusText);
+  return r.json();
+}
+(async () => {
+  const files = document.getElementById('files');
+  try {
+    const me = await getJSON('/api/me');
+    document.getElementById('me').textContent = me.name;
+    const rows = [];
+    for (const id of await getJSON('/api/storage')) {
+      for (const e of await getJSON(`/api/storage/${encodeURIComponent(id)}/list`)) {
+        rows.push(`<tr><td>${id}</td><td>${e.kind === 'folder' ? '📁' : '📄'} ${e.name.replace(/</g, '&lt;')}</td><td>${e.size}</td></tr>`);
+      }
+    }
+    files.innerHTML = rows.length ? `<table>${rows.join('')}</table>` : 'No files yet.';
+  } catch (e) {
+    files.textContent = 'Could not load files: ' + e.message;
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+# PLANNED (providers not implemented yet): sign in with Entra ID, keep files
+# in OneDrive/SharePoint, so a Microsoft 365 customer can switch editors
+# without moving any data.
+listen: 0.0.0.0:8080
+identity:
+  type: oidc
+  issuer: https://login.microsoftonline.com/<tenant-id>/v2.0
+  client_id: <app-registration-id>
+  client_secret_env: FREESAAS_OIDC_SECRET
+storage:
+  - type: onedrive
+  - type: sharepoint
+    site: https://contoso.sharepoint.com/sites/team
