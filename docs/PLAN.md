@@ -17,7 +17,8 @@
 - [ ] Editors embedded in the hub, opening and saving through `/api/storage`
 - [ ] OIDC identity provider (Entra ID, Google, Keycloak tested)
 - [ ] Storage providers: S3, OneDrive/SharePoint, Google Drive, WebDAV
-- [ ] Static mode: OneDrive and Google Drive straight from the browser (OAuth PKCE, public client ids)
+- [x] OneDrive and Google Drive straight from the browser (public client ids, no server)
+- [ ] Google Picker, so `drive.file` users can open existing Drive files
 - [ ] Docker image published. Docker Compose quick start with bundled Keycloak and MinIO.
 - [ ] Public launch: docs site, demo instance, GitHub Sponsors
 

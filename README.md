@@ -20,9 +20,10 @@ storage and identity connectors, cross-app features, AI connectors and
 one-command deployment.
 
 > **Status: early.** The hub opens and saves documents in WordCraft, with
-> files in browser storage (static mode) or on the server. GridCraft and
-> DeckCraft run standalone for now. Cloud storage and SSO providers are
-> planned. See [docs/PLAN.md](docs/PLAN.md).
+> files in browser storage, on the server, or in the user's own OneDrive or
+> Google Drive ([setup](docs/CLOUD-DRIVES.md)). GridCraft and
+> DeckCraft run standalone for now. Server-side cloud storage and SSO
+> providers are planned. See [docs/PLAN.md](docs/PLAN.md).
 
 ## Quick start
 

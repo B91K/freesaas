@@ -21,12 +21,14 @@ serves the hub and editor builds.
 | | Server mode | Static mode |
 |---|---|---|
 | Hosting | `freesaas` binary or Docker | Any static host, e.g. GitHub Pages |
-| Storage | Providers configured on the server | In the browser (IndexedDB); later OneDrive/Google Drive directly from the browser |
-| Sign-in | Identity provider on the server | None yet; later the user's own Microsoft/Google account |
+| Storage | Providers configured on the server | In the browser (IndexedDB), plus the user's OneDrive / Google Drive straight from the browser ([CLOUD-DRIVES.md](CLOUD-DRIVES.md)) |
+| Sign-in | Identity provider on the server | None for the hub; each cloud drive signs in with the user's own Microsoft or Google account |
 | Secrets | Server-side only | **None, by design.** Everything shipped is public. |
 
 The hub (`web/`) is the same in both: `storage.js` picks `ServerStorage` or
-`BrowserStorage` from `config.json`, or by probing for the server.
+`BrowserStorage` from `config.json`, or by probing for the server, and
+`cloud.js` adds `OneDriveStorage` and `GoogleDriveStorage` when
+`config.json` names their client ids. Cloud drives work in both modes.
 
 ## Editor bridge
 

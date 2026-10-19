@@ -1,3 +1,5 @@
+import { cloudStores, completePendingSignIn } from './cloud.js';
+
 // Storage backends for the hub. Each one has the same shape as the server's
 // `StorageProvider` trait: list / read / write / delete, with `/`-separated
 // paths relative to the backend's root.
@@ -95,7 +97,8 @@ export class ServerStorage {
 }
 
 // Pick backends: `config.json` if the site ships one, else the server's
-// configured storage if a server answers, else this browser.
+// configured storage if a server answers, else this browser. Cloud drives
+// named in config.json (cloud.js) are added after them.
 export async function connect() {
   let config = {};
   try {
@@ -103,6 +106,7 @@ export async function connect() {
     if (r.ok) config = await r.json();
   } catch { /* no config: auto-detect */ }
 
+  let base = null;
   if (config.mode !== 'static') {
     try {
       const [me, ids] = await Promise.all(['api/me', 'api/storage'].map(async (u) => {
@@ -110,10 +114,21 @@ export async function connect() {
         if (!r.ok) throw new Error(r.statusText);
         return r.json();
       }));
-      if (ids.length) return { mode: 'server', user: me, stores: ids.map((id) => new ServerStorage(id)), config };
+      if (ids.length) base = { mode: 'server', user: me, stores: ids.map((id) => new ServerStorage(id)) };
     } catch {
       if (config.mode === 'server') throw new Error('The FreeSaaS server is not reachable.');
     }
   }
-  return { mode: 'static', user: null, stores: [new BrowserStorage()], config };
+  base ??= { mode: 'static', user: null, stores: [new BrowserStorage()] };
+
+  const stores = [...base.stores, ...cloudStores(config)];
+  // Back from a provider's sign-in page: finish, and open that store.
+  let signedIn = null;
+  let signInError = null;
+  try {
+    signedIn = await completePendingSignIn(stores);
+  } catch (e) {
+    signInError = e;
+  }
+  return { ...base, stores, config, signedIn, signInError };
 }

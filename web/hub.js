@@ -1,4 +1,5 @@
 import { connect } from './storage.js';
+import { SignInRequired } from './cloud.js';
 
 // The editors the hub can launch. `connected` editors open and save through the
 // hub (see editors/wordcraft-embed/src/bridge.rs); the others run standalone
@@ -82,10 +83,18 @@ async function refresh() {
     const target = acc;
     crumbs.append(' / ', el('button', { class: 'link', onclick: () => go(target) }, part));
   }
+  renderAccount();
   let entries;
   try {
     entries = await store.list(folder);
   } catch (e) {
+    if (e instanceof SignInRequired) {
+      renderAccount();
+      list.replaceChildren(el('div', { class: 'signin' },
+        el('p', {}, e.message),
+        el('button', { class: 'button', onclick: () => store.signIn() }, `Sign in to ${store.label}`)));
+      return;
+    }
     list.replaceChildren(el('p', { class: 'muted' }, `Couldn't list files: ${e.message}`));
     return;
   }
@@ -105,6 +114,19 @@ async function refresh() {
         f.kind === 'file' ? el('button', { class: 'link', onclick: () => download(f.path) }, 'Download') : '',
         el('button', { class: 'link danger', onclick: () => remove(f) }, 'Delete')));
   }));
+}
+
+// "Sign out" for a signed-in cloud drive; the user's name or where files live otherwise.
+function renderAccount() {
+  const who = $('#who');
+  if (store.signOut && store.signedIn) {
+    who.replaceChildren(`${store.label} · `, el('button', { class: 'link', onclick: () => {
+      store.signOut();
+      refresh();
+    } }, 'Sign out'));
+  } else {
+    who.textContent = ctx.user ? ctx.user.name : store.signOut ? store.label : 'Files stay in this browser';
+  }
 }
 
 function go(path) {
@@ -300,10 +322,10 @@ async function main() {
     $('#files').replaceChildren(el('p', { class: 'muted' }, e.message));
     return;
   }
-  store = ctx.stores[0];
-  $('#who').textContent = ctx.user ? ctx.user.name : 'Files stay in this browser';
+  store = ctx.signedIn ?? ctx.stores[0];
+  if (ctx.signInError) toast(ctx.signInError.message, true);
   const select = $('#store');
-  select.replaceChildren(...ctx.stores.map((s, i) => el('option', { value: i }, s.label)));
+  select.replaceChildren(...ctx.stores.map((s, i) => el('option', { value: i, selected: s === store }, s.label)));
   select.hidden = ctx.stores.length < 2;
   select.addEventListener('change', () => {
     store = ctx.stores[select.value];
