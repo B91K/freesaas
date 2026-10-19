@@ -1,0 +1,11 @@
+[package]
+name = "freesaas-identity-dev"
+version = "0.1.0"
+description = "Single-user identity provider for local development. Never use in production."
+edition.workspace = true
+rust-version.workspace = true
+license-file.workspace = true
+
+[dependencies]
+freesaas-core.workspace = true
+async-trait.workspace = true

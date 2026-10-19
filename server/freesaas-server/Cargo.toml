@@ -1,0 +1,25 @@
+[package]
+name = "freesaas-server"
+version = "0.1.0"
+description = "FreeSaaS server: hub API, provider wiring, and hosting for the editors"
+edition.workspace = true
+rust-version.workspace = true
+license-file.workspace = true
+
+[[bin]]
+name = "freesaas"
+path = "src/main.rs"
+
+[dependencies]
+freesaas-core.workspace = true
+freesaas-storage-local.workspace = true
+freesaas-identity-dev.workspace = true
+axum.workspace = true
+bytes.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_yaml.workspace = true
+tokio.workspace = true
+tower-http = { version = "0.6", features = ["fs", "trace"] }
+tracing.workspace = true
+tracing-subscriber.workspace = true

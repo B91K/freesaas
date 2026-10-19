@@ -1,0 +1,9 @@
+# Default compose config: single dev user, files in a Docker volume.
+# Replace `identity` with an OIDC provider before exposing this to anyone.
+listen: 0.0.0.0:8080
+identity:
+  type: dev
+  insecure: true
+storage:
+  - type: local
+    root: /data

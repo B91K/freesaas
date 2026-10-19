@@ -1,0 +1,14 @@
+[package]
+name = "freesaas-core"
+version = "0.1.0"
+description = "Provider interfaces (storage, identity) and shared types for FreeSaaS"
+edition.workspace = true
+rust-version.workspace = true
+license-file.workspace = true
+
+[dependencies]
+async-trait.workspace = true
+bytes.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true

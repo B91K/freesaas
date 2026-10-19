@@ -1,0 +1,12 @@
+[submodule "upstream/wordcraft"]
+	path = upstream/wordcraft
+	url = https://github.com/storytold/wordcraft
+	shallow = true
+[submodule "upstream/gridcraft"]
+	path = upstream/gridcraft
+	url = https://github.com/storytold/gridcraft
+	shallow = true
+[submodule "upstream/deckcraft"]
+	path = upstream/deckcraft
+	url = https://github.com/storytold/deckcraft
+	shallow = true

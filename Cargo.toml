@@ -1,0 +1,32 @@
+[workspace]
+resolver = "3"
+members = [
+    "server/core",
+    "server/providers/storage-local",
+    "server/providers/identity-dev",
+    "server/freesaas-server",
+]
+# The editors are separate Cargo workspaces pulled in as git submodules.
+exclude = ["upstream"]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.90"
+license-file = "LICENSE"
+repository = "https://github.com/B91K/freesaas"
+
+[workspace.dependencies]
+freesaas-core = { path = "server/core" }
+freesaas-storage-local = { path = "server/providers/storage-local" }
+freesaas-identity-dev = { path = "server/providers/identity-dev" }
+async-trait = "0.1"
+axum = "0.8"
+bytes = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+thiserror = "2"
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tempfile = "3"

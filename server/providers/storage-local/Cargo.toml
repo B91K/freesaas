@@ -1,0 +1,16 @@
+[package]
+name = "freesaas-storage-local"
+version = "0.1.0"
+description = "Local-disk storage provider for FreeSaaS (reference implementation)"
+edition.workspace = true
+rust-version.workspace = true
+license-file.workspace = true
+
+[dependencies]
+freesaas-core.workspace = true
+async-trait.workspace = true
+bytes.workspace = true
+tokio.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

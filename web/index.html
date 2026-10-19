@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreeSaaS</title>
+<link rel="stylesheet" href="hub.css">
+<script type="module" src="hub.js"></script>
+</head>
+<body>
+<main id="hub">
+  <header>
+    <h1>FreeSaaS</h1>
+    <div class="header-right">
+      <select id="store" hidden aria-label="Storage"></select>
+      <span id="who" class="muted"></span>
+    </div>
+  </header>
+  <section id="apps" aria-label="Create"></section>
+  <section>
+    <div class="files-head">
+      <nav id="crumbs" aria-label="Folder"></nav>
+      <label class="button">Upload<input id="upload" type="file" multiple hidden></label>
+    </div>
+    <div id="files"><p class="muted">Loading…</p></div>
+  </section>
+  <footer class="muted">
+    Editors: <a href="https://github.com/storytold/wordcraft">WordCraft</a>,
+    <a href="https://github.com/storytold/gridcraft">GridCraft</a> and
+    <a href="https://github.com/storytold/deckcraft">DeckCraft</a> (alpha).
+    <a href="https://github.com/B91K/freesaas">Source</a>.
+  </footer>
+</main>
+
+<div id="editor">
+  <div class="bar">
+    <button id="back" class="link">← Files</button>
+    <strong id="doc-name"></strong>
+    <span id="doc-status" class="muted"></span>
+  </div>
+  <iframe id="frame" title="Editor" allow="clipboard-read; clipboard-write"></iframe>
+</div>
+
+<dialog id="picker">
+  <h2>Open a document</h2>
+  <div id="picker-files"></div>
+  <div class="dialog-actions">
+    <label class="button">From your computer…<input id="picker-upload" type="file" hidden></label>
+    <form method="dialog"><button class="link">Cancel</button></form>
+  </div>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
